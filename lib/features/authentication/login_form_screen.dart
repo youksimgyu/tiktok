@@ -3,6 +3,7 @@ import 'package:tiktok/constants/gaps.dart';
 import 'package:tiktok/features/authentication/widgets/form_button.dart';
 
 import '../../constants/sizes.dart';
+import '../onboarding/interests_screen.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({Key? key}) : super(key: key);
@@ -20,6 +21,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const InterestsScreen(),
+          ),
+        );
       }
     }
   }
@@ -48,8 +55,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               children: [
                 Gaps.v28,
                 TextFormField(
+                  onEditingComplete: _onSubmitTap,
                   validator: (value) {
-                    return;
+                    if (value != null && value.isEmpty) {
+                      return 'Please write your email';
+                    }
+                    return null;
                   },
                   onSaved: (newValue) {
                     formData['email'] = newValue!;
@@ -66,8 +77,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                 ),
                 Gaps.v16,
                 TextFormField(
+                  onEditingComplete: _onSubmitTap,
                   validator: (value) {
-                    return;
+                    if (value != null && value.isEmpty) {
+                      return 'Please write your password';
+                    }
+                    return null;
                   },
                   onSaved: (newValue) => formData['password'] = newValue!,
                   decoration: InputDecoration(
@@ -83,7 +98,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                 Gaps.v28,
                 GestureDetector(
                   onTap: _onSubmitTap,
-                  child: FormButton(
+                  child: const FormButton(
                     disabled: false,
                     text: 'Log in',
                   ),
