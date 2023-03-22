@@ -24,65 +24,72 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     }
   }
 
+  void _onScaffoldTap() {
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Log in',
+    return GestureDetector(
+      onTap: _onScaffoldTap,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Log in',
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Sizes.size36,
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Gaps.v28,
-              TextFormField(
-                validator: (value) {
-                  return;
-                },
-                onSaved: (newValue) {
-                  formData['email'] = newValue!;
-                },
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade400),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade400),
-                  ),
-                ),
-              ),
-              Gaps.v16,
-              TextFormField(
-                validator: (value) {
-                  return;
-                },
-                onSaved: (newValue) => formData['password'] = newValue!,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade400),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade400),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Sizes.size36,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Gaps.v28,
+                TextFormField(
+                  validator: (value) {
+                    return;
+                  },
+                  onSaved: (newValue) {
+                    formData['email'] = newValue!;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
                   ),
                 ),
-              ),
-              Gaps.v28,
-              GestureDetector(
-                onTap: _onSubmitTap,
-                child: FormButton(
-                  disabled: false,
-                  text: 'Log in',
+                Gaps.v16,
+                TextFormField(
+                  validator: (value) {
+                    return;
+                  },
+                  onSaved: (newValue) => formData['password'] = newValue!,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                Gaps.v28,
+                GestureDetector(
+                  onTap: _onSubmitTap,
+                  child: FormButton(
+                    disabled: false,
+                    text: 'Log in',
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
