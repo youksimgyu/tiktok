@@ -22,7 +22,6 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         _formKey.currentState!.save();
       }
     }
-    _formKey.currentState?.validate();
   }
 
   @override
