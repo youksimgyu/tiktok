@@ -13,7 +13,8 @@ class MainNavigationScreen extends StatefulWidget {
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
-class _MainNavigationScreenState extends State<MainNavigationScreen> {
+class _MainNavigationScreenState extends State<MainNavigationScreen>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   final screens = [
@@ -73,6 +74,28 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     );
   }
 
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    );
+    _animation = Tween<double>(begin: 1, end: 1.4).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,9 +143,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 onTap: () => _onTap(1),
               ),
               Gaps.h24,
-              GestureDetector(
-                onTap: _onPostVideoButton,
-                child: const PostVideoButton(),
+              Transform.scale(
+                scale: _animation.value,
+                child: GestureDetector(
+                  onTapDown: (_) {
+                    _controller.forward();
+                  },
+                  onTapUp: (_) {
+                    _controller.reverse();
+                  },
+                  onTapCancel: () {
+                    _controller.reverse();
+                  },
+                  onTap: _onPostVideoButton,
+                  child: const PostVideoButton(),
+                ),
               ),
               Gaps.h24,
               NavTab(

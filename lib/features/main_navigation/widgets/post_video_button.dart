@@ -3,9 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../constants/sizes.dart';
 
-class PostVideoButton extends StatelessWidget {
+class PostVideoButton extends StatefulWidget {
   const PostVideoButton({Key? key}) : super(key: key);
 
+  @override
+  State<PostVideoButton> createState() => _PostVideoButtonState();
+}
+
+class _PostVideoButtonState extends State<PostVideoButton> {
   @override
   Widget build(BuildContext context) {
     return Stack(
