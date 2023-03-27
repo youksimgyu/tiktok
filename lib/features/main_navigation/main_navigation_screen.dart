@@ -5,6 +5,7 @@ import 'package:tiktok/features/main_navigation/widgets/post_video_button.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../videos/video_timeline_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -16,42 +17,6 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
-
-  final screens = [
-    const Center(
-      child: Text(
-        'Home',
-        style: TextStyle(
-          fontSize: 49,
-        ),
-      ),
-    ),
-    const Center(
-      child: Text(
-        'Discover',
-        style: TextStyle(
-          fontSize: 49,
-        ),
-      ),
-    ),
-    Container(),
-    const Center(
-      child: Text(
-        'Inbox',
-        style: TextStyle(
-          fontSize: 49,
-        ),
-      ),
-    ),
-    const Center(
-      child: Text(
-        'Profile',
-        style: TextStyle(
-          fontSize: 49,
-        ),
-      ),
-    ),
-  ];
 
   void _onTap(int index) {
     setState(() {
@@ -74,6 +39,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     );
   }
 
+  // 가운데 아이콘 버튼 꾹 누를 때 애니메이션 부분
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -103,19 +69,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
         children: [
           Offstage(
             offstage: _selectedIndex != 0,
-            child: screens.elementAt(_selectedIndex),
+            child: const VideoTimelineScreen(),
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: screens.elementAt(_selectedIndex),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectedIndex != 3,
-            child: screens.elementAt(_selectedIndex),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectedIndex != 4,
-            child: screens.elementAt(_selectedIndex),
+            child: Container(),
           ),
         ],
       ),
