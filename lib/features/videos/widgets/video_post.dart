@@ -88,6 +88,10 @@ class _VideoPostState extends State<VideoPost>
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+    // 다른 탭으로 이동 시 재생중이면 멈춤
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _videoPlayerController.pause();
+    }
   }
 
   // 정지시 재생아이콘 없앰
