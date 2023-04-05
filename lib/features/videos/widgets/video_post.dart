@@ -116,6 +116,8 @@ class _VideoPostState extends State<VideoPost>
   void _onCommentTap() async {
     // await 끝나는 시점은 댓글창이 닫히는 시점 (VideoComments)
     await showModalBottomSheet(
+      // 사이즈 변경 가능하도록 변경
+      isScrollControlled: true,
       // 투명색
       backgroundColor: Colors.transparent,
       context: context,

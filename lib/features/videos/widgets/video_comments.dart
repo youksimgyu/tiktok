@@ -12,22 +12,49 @@ class VideoComments extends StatefulWidget {
 }
 
 class _VideoCommentsState extends State<VideoComments> {
-  bool _isLiked = false;
+  bool _isWriting = false;
+  bool _isFullScreen = false;
+  final List<Map<String, bool>> _isLikedList = List.generate(
+    10,
+    (index) => {'isLiked': false},
+  );
+
+  final ScrollController _scrollController = ScrollController();
 
   void _onClosePressed() {
     Navigator.of(context).pop();
   }
 
-  // 버튼 누르면 하트 색 바뀌게 빨간색 채워진 하트
-  void _onLikePressed() {
+  // 인덱스에 따른 좋아요 상태 변경
+  void _onLikePressed(int index) {
     setState(() {
-      _isLiked = !_isLiked;
+      _isLikedList[index]['isLiked'] = !_isLikedList[index]['isLiked']!;
+    });
+  }
+
+  void _onTextFiledPressed() {
+    setState(() {
+      _isFullScreen = true;
+      _isWriting = true;
+    });
+  }
+
+  // _stopWriting 누르면 포커스 해제
+  void _stopWriting() {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _isWriting = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final size = MediaQuery.of(context).size;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      height: _isFullScreen ? size.height * 1 : size.height * 0.7,
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(
         // borderRadius 상단만 적용
@@ -48,81 +75,173 @@ class _VideoCommentsState extends State<VideoComments> {
             ),
           ],
         ),
-        body: ListView.separated(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.size16,
-            vertical: Sizes.size10,
-          ),
-          separatorBuilder: (context, index) => Gaps.v20,
-          itemCount: 10,
-          itemBuilder: (context, index) => Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        body: GestureDetector(
+          onTap: _stopWriting,
+          child: Stack(
             children: [
-              const CircleAvatar(
-                radius: 18,
-                child: Text('A'),
-              ),
-              Gaps.h10,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'User name',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: Sizes.size14,
-                        color: Colors.grey.shade500,
+              Scrollbar(
+                controller: _scrollController,
+                thickness: 5,
+                trackVisibility: true,
+                interactive: true,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Sizes.size16,
+                    vertical: Sizes.size10,
+                  ),
+                  separatorBuilder: (context, index) => Gaps.v20,
+                  itemCount: 10,
+                  itemBuilder: (context, index) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        radius: 18,
+                        child: Text('A'),
                       ),
-                    ),
-                    Gaps.v3,
-                    const Text(
-                      'Comment text Comment text Comment text Comment text Comment text',
-                    ),
-                  ],
+                      Gaps.h10,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'User name',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: Sizes.size14,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                            Gaps.v3,
+                            const Text(
+                              'Comment text Comment text Comment text Comment text Comment text',
+                            ),
+                          ],
+                        ),
+                      ),
+                      Gaps.h10,
+                      GestureDetector(
+                        onTap: () => _onLikePressed(index),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _isLikedList[index]['isLiked']!
+                                ? FaIcon(
+                                    // 누르면 빨간색 하트
+                                    FontAwesomeIcons.solidHeart,
+                                    size: Sizes.size20,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : FaIcon(
+                                    FontAwesomeIcons.heart,
+                                    size: Sizes.size20,
+                                    color: Colors.grey.shade500,
+                                  ),
+                            Gaps.v3,
+                            Text(
+                              '52.2K',
+                              style: TextStyle(
+                                fontSize: Sizes.size12,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Gaps.h10,
-              GestureDetector(
-                onTap: _onLikePressed,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _isLiked
-                        ? FaIcon(
-                            // 누르면 빨간색 하트
-                            FontAwesomeIcons.solidHeart,
-                            size: Sizes.size20,
-                            color: Theme.of(context).primaryColor,
-                          )
-                        : FaIcon(
-                            FontAwesomeIcons.heart,
-                            size: Sizes.size20,
-                            color: Colors.grey.shade500,
+              Positioned(
+                width: size.width,
+                bottom: 0,
+                child: BottomAppBar(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.size16,
+                      vertical: Sizes.size10,
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.grey.shade500,
+                          foregroundColor: Colors.white,
+                          child: const Text('A'),
+                        ),
+                        Gaps.h10,
+                        Expanded(
+                          child: SizedBox(
+                            height: Sizes.size44,
+                            child: TextField(
+                              onTap: _onTextFiledPressed,
+                              textInputAction: TextInputAction.newline,
+                              expands: true,
+                              maxLines: null,
+                              minLines: null,
+                              decoration: InputDecoration(
+                                hintText: 'Add a comment...',
+                                hintStyle: TextStyle(
+                                  fontSize: Sizes.size14,
+                                  color: Colors.grey.shade500,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    Sizes.size12,
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: Sizes.size10,
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: Sizes.size14,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.at,
+                                        size: Sizes.size20,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      Gaps.h14,
+                                      FaIcon(
+                                        FontAwesomeIcons.gift,
+                                        size: Sizes.size20,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      Gaps.h14,
+                                      FaIcon(
+                                        FontAwesomeIcons.faceSmile,
+                                        size: Sizes.size20,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      Gaps.h14,
+                                      if (_isWriting)
+                                        GestureDetector(
+                                          onTap: _stopWriting,
+                                          child: FaIcon(
+                                            FontAwesomeIcons.circleArrowUp,
+                                            size: Sizes.size20,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                    Gaps.v3,
-                    Text(
-                      '52.2K',
-                      style: TextStyle(
-                        fontSize: Sizes.size12,
-                        color: Colors.grey.shade500,
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.white,
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundColor: Colors.grey.shade500,
-                foregroundColor: Colors.white,
-                child: const Text('A'),
               ),
             ],
           ),
