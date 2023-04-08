@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tiktok/features/onboarding/interests_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 
 import 'constants/sizes.dart';
 
 void main() {
+  // 상태바 투명하도록 변경
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    statusBarIconBrightness: Brightness.light,
+    statusBarColor: Colors.transparent,
+  ));
   runApp(const TikTokApp());
 }
 
@@ -17,6 +23,9 @@ class TikTokApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFFE9435A),
+        ),
         appBarTheme: const AppBarTheme(
           foregroundColor: Colors.black,
           backgroundColor: Colors.white,
@@ -29,7 +38,7 @@ class TikTokApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const InterestsScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }
