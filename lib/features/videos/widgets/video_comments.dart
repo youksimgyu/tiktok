@@ -48,6 +48,12 @@ class _VideoCommentsState extends State<VideoComments> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
@@ -67,7 +73,7 @@ class _VideoCommentsState extends State<VideoComments> {
         appBar: AppBar(
           backgroundColor: Colors.grey.shade50,
           automaticallyImplyLeading: false,
-          title: const Text('22796 comments'),
+          title: const Text('22796 댓글'),
           actions: [
             IconButton(
               onPressed: _onClosePressed,
@@ -81,9 +87,8 @@ class _VideoCommentsState extends State<VideoComments> {
             children: [
               Scrollbar(
                 controller: _scrollController,
-                thickness: 5,
-                trackVisibility: true,
                 interactive: true,
+                trackVisibility: true,
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(
                     horizontal: Sizes.size16,
@@ -113,7 +118,7 @@ class _VideoCommentsState extends State<VideoComments> {
                             ),
                             Gaps.v3,
                             const Text(
-                              'Comment text Comment text Comment text Comment text Comment text',
+                              '댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용',
                             ),
                           ],
                         ),
@@ -180,7 +185,7 @@ class _VideoCommentsState extends State<VideoComments> {
                               maxLines: null,
                               minLines: null,
                               decoration: InputDecoration(
-                                hintText: 'Add a comment...',
+                                hintText: '댓글 쓰기',
                                 hintStyle: TextStyle(
                                   fontSize: Sizes.size14,
                                   color: Colors.grey.shade500,

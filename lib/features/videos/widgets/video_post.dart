@@ -29,7 +29,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
   bool _isPaused = false;
   bool isExpanded = false;
-  String text = '준석이 좀 보세요 \n준석이 좀 보세요!!! 준석이 좀 보세요 준석이 좀 보세요!!!';
+  String text = '준석이 좀 보세요 준석이 좀 보세요!!! 준석이 좀 보세요 준석이 좀 보세요!!!';
 
   // 동영상이 끝나는 조건
   void _onVideoChange() {
@@ -176,15 +176,17 @@ class _VideoPostState extends State<VideoPost>
             bottom: 20,
             left: 15,
             child: SizedBox(
-              width: 310,
+              width: 270,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     '@준석',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: Sizes.size20,
+                      fontSize: Sizes.size16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -198,7 +200,7 @@ class _VideoPostState extends State<VideoPost>
                           : TextOverflow.ellipsis,
                       maxLines: isExpanded ? null : 1,
                       style: const TextStyle(
-                        fontSize: Sizes.size16,
+                        fontSize: Sizes.size14,
                         color: Colors.white,
                       ),
                     ),
