@@ -60,7 +60,7 @@ class _VideoCommentsState extends State<VideoComments> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
-      height: _isFullScreen ? size.height * 1 : size.height * 0.7,
+      height: _isFullScreen ? size.height * 0.97 : size.height * 0.7,
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(
         // borderRadius 상단만 적용

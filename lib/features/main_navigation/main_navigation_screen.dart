@@ -30,10 +30,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   void _onPostVideoButton() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Record video',
+        builder: (context) => SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Record video',
+              ),
             ),
           ),
         ),
