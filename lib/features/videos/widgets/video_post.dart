@@ -83,6 +83,7 @@ class _VideoPostState extends State<VideoPost>
   // 다른 페이지 이동시 완전히 이동되면 info.visibleFraction 의 값이 1이 되고 재생
   // 이동중 다음 페이지 동영상 재생 안되도록
   void _onVisibilityChanged(VisibilityInfo info) {
+    if (!mounted) return;
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
