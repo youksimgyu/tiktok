@@ -7,8 +7,8 @@ import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
 import 'login_screen.dart';
 
-class SingUpScreen extends StatelessWidget {
-  const SingUpScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   void _onLoginTap(BuildContext context) {
     Navigator.of(context).push(
