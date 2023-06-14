@@ -4,12 +4,19 @@ import 'package:tiktok/features/main_navigation/main_navigation_screen.dart';
 
 import 'constants/sizes.dart';
 
-void main() {
-  // 상태바 투명하도록 변경
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-    statusBarIconBrightness: Brightness.light,
-    statusBarColor: Colors.transparent,
-  ));
+void main() async {
+  // 위젯 엔진 초기화
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  // 상태바
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark,
+  );
+
   runApp(const TikTokApp());
 }
 
@@ -19,6 +26,7 @@ class TikTokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
