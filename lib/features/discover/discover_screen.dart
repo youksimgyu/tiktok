@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok/constants/breakpoints.dart';
 
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
@@ -81,6 +80,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: tabs.length,
       child: GestureDetector(
@@ -89,68 +89,73 @@ class _DiscoverScreenState extends State<DiscoverScreen>
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             elevation: 1,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const FaIcon(
-                  FontAwesomeIcons.chevronLeft,
-                  size: Sizes.size20,
-                ),
-                Gaps.h20,
-                Expanded(
-                  child: TextField(
-                    onTap: _onTextFiledPressed,
-                    controller: _textEditingController,
-                    onChanged: _onSearchChanged,
-                    onSubmitted: _onSearchSubmitted,
-                    cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(
-                      hintText: "Search",
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(Sizes.size5),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: Sizes.size10,
-                      ),
-                      prefixIcon: Container(
-                        width: Sizes.size20,
-                        alignment: Alignment.center,
-                        child: const FaIcon(
-                          FontAwesomeIcons.magnifyingGlass,
-                          color: Colors.black,
-                          size: Sizes.size20,
+            title: Container(
+              constraints: const BoxConstraints(
+                maxWidth: Breakpoints.sm,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const FaIcon(
+                    FontAwesomeIcons.chevronLeft,
+                    size: Sizes.size20,
+                  ),
+                  Gaps.h20,
+                  Expanded(
+                    child: TextField(
+                      onTap: _onTextFiledPressed,
+                      controller: _textEditingController,
+                      onChanged: _onSearchChanged,
+                      onSubmitted: _onSearchSubmitted,
+                      cursorColor: Theme.of(context).primaryColor,
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        hintStyle: const TextStyle(
+                          color: Colors.grey,
                         ),
-                      ),
-                      suffixIcon: _isWriting
-                          ? GestureDetector(
-                              onTap: _onClearTap,
-                              child: Container(
-                                width: Sizes.size20,
-                                alignment: Alignment.center,
-                                child: const FaIcon(
-                                  FontAwesomeIcons.solidCircleXmark,
-                                  color: Colors.black38,
-                                  size: Sizes.size20 + Sizes.size2,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(Sizes.size5),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.size10,
+                        ),
+                        prefixIcon: Container(
+                          width: Sizes.size20,
+                          alignment: Alignment.center,
+                          child: const FaIcon(
+                            FontAwesomeIcons.magnifyingGlass,
+                            color: Colors.black,
+                            size: Sizes.size20,
+                          ),
+                        ),
+                        suffixIcon: _isWriting
+                            ? GestureDetector(
+                                onTap: _onClearTap,
+                                child: Container(
+                                  width: Sizes.size20,
+                                  alignment: Alignment.center,
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.solidCircleXmark,
+                                    color: Colors.black38,
+                                    size: Sizes.size20 + Sizes.size2,
+                                  ),
                                 ),
-                              ),
-                            )
-                          : null,
+                              )
+                            : null,
+                      ),
                     ),
                   ),
-                ),
-                Gaps.h20,
-                // 슬라이드 부분
-                const FaIcon(
-                  FontAwesomeIcons.sliders,
-                  size: Sizes.size24,
-                ),
-              ],
+                  Gaps.h20,
+                  // 슬라이드 부분
+                  const FaIcon(
+                    FontAwesomeIcons.sliders,
+                    size: Sizes.size24,
+                  ),
+                ],
+              ),
             ),
             bottom: TabBar(
               // TacBarView 연동
@@ -186,86 +191,88 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   Sizes.size6,
                 ),
                 itemCount: 20,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: width > Breakpoints.lg ? 5 : 2,
                   crossAxisSpacing: Sizes.size10,
                   mainAxisSpacing: Sizes.size10,
                   childAspectRatio: 9 / 19.2,
                 ),
-                itemBuilder: (context, index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Sizes.size4)),
-                      child: AspectRatio(
-                        aspectRatio: 9 / 16,
-                        child: FadeInImage.assetNetwork(
-                          placeholderFit: BoxFit.cover,
-                          fit: BoxFit.cover,
-                          placeholder: "assets/images/placeholder.png",
-                          image:
-                              "https://blog.kakaocdn.net/dn/OspVI/btqJG96yRGN/qOU3e4h2mDICEmMhJPBif0/img.jpg",
+                itemBuilder: (context, index) => LayoutBuilder(
+                  builder: (context, constraints) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Sizes.size4)),
+                        child: AspectRatio(
+                          aspectRatio: 9 / 16,
+                          child: FadeInImage.assetNetwork(
+                            placeholderFit: BoxFit.cover,
+                            fit: BoxFit.cover,
+                            placeholder: "assets/images/placeholder.png",
+                            image:
+                                "https://blog.kakaocdn.net/dn/OspVI/btqJG96yRGN/qOU3e4h2mDICEmMhJPBif0/img.jpg",
+                          ),
                         ),
                       ),
-                    ),
-                    Gaps.v8,
-                    const Text(
-                      "그림에 대한 내용 깁니다 그림에 대한 내용 깁니다 그림에 대한 내용 깁니다 그림에 대한 내용 깁니다",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: Sizes.size12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Gaps.v3,
-                    DefaultTextStyle(
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade600,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Sizes.size4,
+                      Gaps.v8,
+                      const Text(
+                        "그림에 대한 내용 깁니다 그림에 대한 내용 깁니다 그림에 대한 내용 깁니다 그림에 대한 내용 깁니다",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: Sizes.size12,
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: Row(
-                          children: [
-                            const CircleAvatar(
-                              radius: 12,
-                              backgroundImage: NetworkImage(
-                                "https://avatars.githubusercontent.com/u/92096204?v=4",
-                              ),
-                            ),
-                            Gaps.h4,
-                            Expanded(
-                              child: Text(
-                                "내 아바타 이름이 깁니다",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: Sizes.size12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade600,
+                      ),
+                      Gaps.v3,
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade600,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.size4,
+                          ),
+                          child: Row(
+                            children: [
+                              const CircleAvatar(
+                                radius: 12,
+                                backgroundImage: NetworkImage(
+                                  "https://avatars.githubusercontent.com/u/92096204?v=4",
                                 ),
                               ),
-                            ),
-                            Gaps.h4,
-                            FaIcon(
-                              FontAwesomeIcons.heart,
-                              size: Sizes.size16,
-                              color: Colors.grey.shade600,
-                            ),
-                            Gaps.h2,
-                            const Text(
-                              "2.9M",
-                            ),
-                          ],
+                              Gaps.h4,
+                              Expanded(
+                                child: Text(
+                                  "내 아바타 이름이 깁니다",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: Sizes.size12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ),
+                              Gaps.h4,
+                              FaIcon(
+                                FontAwesomeIcons.heart,
+                                size: Sizes.size16,
+                                color: Colors.grey.shade600,
+                              ),
+                              Gaps.h2,
+                              const Text(
+                                "2.9M",
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               for (var tab in tabs.skip(1))

@@ -5,6 +5,8 @@ import 'package:tiktok/constants/sizes.dart';
 import 'package:tiktok/features/profiles/widgets/persistent_tab_bar.dart';
 import 'package:tiktok/features/settings/settings_screen.dart';
 
+import '../../constants/breakpoints.dart';
+
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
 
@@ -21,6 +23,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: DefaultTabController(
         length: 2,
@@ -259,8 +262,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 itemCount: 20,
                 padding: EdgeInsets.zero,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: width > Breakpoints.xl ? 5 : 3,
                   crossAxisSpacing: Sizes.size2,
                   mainAxisSpacing: Sizes.size2,
                   childAspectRatio: 9 / 14,
