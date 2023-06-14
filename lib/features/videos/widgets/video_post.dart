@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok/features/videos/widgets/video_button.dart';
@@ -29,6 +30,7 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
   bool _isPaused = false;
   bool isExpanded = false;
+  bool isVolumeOn = true;
   String text = '준석이 좀 보세요 준석이 좀 보세요!!! 준석이 좀 보세요 준석이 좀 보세요!!!';
 
   // 동영상이 끝나는 조건
@@ -45,6 +47,12 @@ class _VideoPostState extends State<VideoPost>
 
     // 동영상 루프돌게
     await _videoPlayerController.setLooping(true);
+
+    // 웹에서 실행시
+    if (kIsWeb) {
+      await _videoPlayerController.setVolume(0);
+      isVolumeOn = false;
+    }
 
     // 동영상이 끝나면 페이지 이동 읽어줌
     _videoPlayerController.addListener(_onVideoChange);
@@ -77,6 +85,7 @@ class _VideoPostState extends State<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -115,6 +124,12 @@ class _VideoPostState extends State<VideoPost>
     setState(() {
       isExpanded = !isExpanded;
     });
+  }
+
+  void _onVolumeOnTap() async {
+    isVolumeOn = !isVolumeOn;
+    await _videoPlayerController.setVolume(isVolumeOn ? 1 : 0);
+    setState(() {});
   }
 
   // 댓글 버튼 누르면 댓글창 뜨게
@@ -215,6 +230,28 @@ class _VideoPostState extends State<VideoPost>
             right: 15,
             child: Column(
               children: [
+                if (kIsWeb)
+                  GestureDetector(
+                    onTap: _onVolumeOnTap,
+                    child: FaIcon(
+                      isVolumeOn
+                          ? FontAwesomeIcons.volumeHigh
+                          : FontAwesomeIcons.volumeOff,
+                      color: Colors.white,
+                    ),
+                  ),
+                // 스마트폰 실행시
+                if (!kIsWeb)
+                  GestureDetector(
+                    onTap: _onVolumeOnTap,
+                    child: FaIcon(
+                      isVolumeOn
+                          ? FontAwesomeIcons.volumeHigh
+                          : FontAwesomeIcons.volumeOff,
+                      color: Colors.white,
+                    ),
+                  ),
+                Gaps.v24,
                 const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
